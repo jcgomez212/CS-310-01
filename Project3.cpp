@@ -1,9 +1,8 @@
 // Juliana Gomez (s1321300)
 // Tuesday, February 13th, 2024
 // CS 310-01 (Dr. Ling Zheng)
-// In this project students were prompted to make a C++ file/application that keeps track of a user's health.
-// The final output must print the user's name, gender, age, and height (in meters m ), weight (in kilograms kg ),
-// as well as the exercise worked on for that day (in with time in mins) 
+// Project 3: Personal Fitness Application
+// This program tracks a user's health, taking inputs for name, gender, age, height, weight, exercise type, and exercise time.
 
 #include <iostream>
 #include <string>
@@ -21,12 +20,12 @@ int main()
     int userAge, exerciseTime;
     double userHeight, userWeight;
 
-    // Get user inputs for name and gender
+    // Get user inputs for name, gender, age, and height
     cout << "Enter your name: ";
     getline(cin, userName); // Allowing multiple words for the name
 
     cout << "Enter your gender: ";
-    getline(cin, userGender); // Allowing multiple words for the gender
+    getline(cin, userGender);
 
     // Input validation for age
     while (true)
@@ -117,7 +116,7 @@ void addData(string& userName, string& userGender, int& userAge, double& userHei
     cin.ignore(); // Clear the newline character left in the buffer
 
     cout << "Enter the exercise type for today: ";
-    getline(cin, exerciseType); // Allowing multiple words for the exercise type
+    getline(cin, exerciseType);
 
     // Input validation for exercise time
     while (true)
