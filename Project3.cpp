@@ -1,7 +1,7 @@
 // Juliana Gomez (s1321300)
 // Tuesday, February 13th, 2024
 // CS 310-01 (Dr. Ling Zheng)
-// Project 3: Personal Fitness Application
+// Project 3: Personal Fitness Application (Revised)
 // This program tracks a user's health, taking inputs for name, gender, age, height, weight, exercise type, and exercise time.
 
 #include <iostream>
@@ -10,7 +10,7 @@
 using namespace std;
 
 // Function prototypes
-void addData(string& userName, string& userGender, int& userAge, double& userHeight, double& userWeight, string& exerciseType, int& exerciseTime);
+void addData(double& userWeight, string& exerciseType, int& exerciseTime);
 void printData(const string& userName, const string& userGender, const int& userAge, const double& userHeight, const double& userWeight, const string& exerciseType, const int& exerciseTime);
 
 int main()
@@ -65,7 +65,27 @@ int main()
         }
     }
 
-    cin.ignore(); // Clear the newline character left in the buffer after numeric inputs
+    // Continue after inputting height
+    cout << "Thank you for providing your height.\n";
+
+    // Input validation for weight
+    while (true)
+    {
+        cout << "Enter your weight (in kilograms): ";
+        cin >> userWeight;
+
+        if (cin.fail()) // Check if the input is not a double
+        {
+            cout << "Invalid input. Please enter a numeric value for weight." << endl;
+            cin.clear();         // Clear the error flag
+            cin.ignore(100, '\n'); // Discard invalid input
+        }
+        else
+        {
+            cin.ignore(); // Clear the newline character left in the buffer
+            break;        // Break out of the loop if valid input
+        }
+    }
 
     // Initialize a flag to check if data has been added
     bool dataAdded = false;
@@ -87,7 +107,7 @@ int main()
         switch (choice)
         {
             case 1:
-                addData(userName, userGender, userAge, userHeight, userWeight, exerciseType, exerciseTime);
+                addData(userWeight, exerciseType, exerciseTime);
                 dataAdded = true;
                 break;
             case 2:
@@ -108,7 +128,7 @@ int main()
 }
 
 // Function to add data for today's weight and exercise information
-void addData(string& userName, string& userGender, int& userAge, double& userHeight, double& userWeight, string& exerciseType, int& exerciseTime)
+void addData(double& userWeight, string& exerciseType, int& exerciseTime)
 {
     cout << "\nEnter today's weight (in kilograms): ";
     cin >> userWeight;
@@ -139,7 +159,8 @@ void addData(string& userName, string& userGender, int& userAge, double& userHei
 }
 
 // Function to print user's latest data
-void printData(const string& userName, const string& userGender, const int& userAge, const double& userHeight, const double& userWeight, const string& exerciseType, const int& exerciseTime)
+void printData(const string& userName, const string& userGender, const int& userAge,
+const double& userHeight, const double& userWeight, const string& exerciseType, const int& exerciseTime)
 {
     cout << "\nUser's latest data:\n";
     cout << "Name: " << userName << endl;
