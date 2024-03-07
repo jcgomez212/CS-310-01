@@ -12,17 +12,16 @@ This program tracks a user's health, allowing users to input and print their hea
 
 #include <iostream>
 #include <string>
-#include <sstream> // for stringstream
 using namespace std;
 
 // Function prototypes
 int getIntegerInput(const string& prompt);
 double getDoubleInput(const string& prompt);
-void getBasicInfo(string& userName, string& userGender, int& userAge, double& userHeight);
 void printMenu();
 int selectMenu();
-void inputData(string& userName, string& userGender, int& userAge, double& userHeight, double& userWeight, string& exerciseType, int& exerciseTime);
-void printData(const string& userName, const string& userGender, const int& userAge, const double& userHeight, const double& userWeight, const string& exerciseType, const int& exerciseTime);
+void inputData(double& userWeight, string& exerciseType, int& exerciseTime);
+void printData(const string& userName, const string& userGender, const int& userAge,
+               const double& userHeight, const double& userWeight, const string& exerciseType, const int& exerciseTime);
 
 int main()
 {
@@ -32,7 +31,17 @@ int main()
     double userHeight, userWeight;
 
     // Get basic user info
-    getBasicInfo(userName, userGender, userAge, userHeight);
+    cout << "Enter your name: ";
+    getline(cin, userName);
+
+    cout << "Enter your gender: ";
+    getline(cin, userGender);
+
+    userAge = getIntegerInput("Enter your age: ");
+    userHeight = getDoubleInput("Enter your height (in meters): ");
+
+    // Initialize a flag to check if data has been added
+    bool dataAdded = false;
 
     // Main loop for the program
     while (true)
@@ -44,10 +53,14 @@ int main()
         switch (choice)
         {
             case 1:
-                inputData(userName, userGender, userAge, userHeight, userWeight, exerciseType, exerciseTime);
+                inputData(userWeight, exerciseType, exerciseTime);
+                dataAdded = true;
                 break;
             case 2:
-                printData(userName, userGender, userAge, userHeight, userWeight, exerciseType, exerciseTime);
+                if (dataAdded)
+                    printData(userName, userGender, userAge, userHeight, userWeight, exerciseType, exerciseTime);
+                else
+                    cout << "There is no fitness data to print.\n";
                 break;
             case 3:
                 cout << "Exiting the application.\n" << endl;
@@ -94,18 +107,6 @@ double getDoubleInput(const string& prompt) {
     }
 }
 
-// Function to get basic user information
-void getBasicInfo(string& userName, string& userGender, int& userAge, double& userHeight) {
-    cout << "Enter your name: ";
-    getline(cin, userName); // Allowing multiple words for the name
-
-    cout << "Enter your gender: ";
-    getline(cin, userGender);
-
-    userAge = getIntegerInput("Enter your age: ");
-    userHeight = getDoubleInput("Enter your height (in meters): ");
-}
-
 // Function to print the menu options
 void printMenu() {
     cout << "\nMenu:\n";
@@ -120,19 +121,25 @@ int selectMenu() {
 }
 
 // Function to add data for today's weight and exercise information
-void inputData(string& userName, string& userGender, int& userAge, double& userHeight, double& userWeight, string& exerciseType, int& exerciseTime)
+void inputData(double& userWeight, string& exerciseType, int& exerciseTime)
 {
-    userWeight = getDoubleInput("\nEnter today's weight (in kilograms): ");
+    cout << "\nEnter today's weight (in kilograms): ";
+    cin >> userWeight;
+
+    cin.ignore(); // Clear the newline character left in the buffer
 
     cout << "Enter the exercise type for today: ";
     getline(cin, exerciseType);
 
-    exerciseTime = getIntegerInput("Enter the exercise time (in minutes): ");
+    cout << "Enter the exercise time (in minutes): ";
+    cin >> exerciseTime;
+
+    cin.ignore(); // Clear the newline character left in the buffer
 }
 
 // Function to print user's latest data
 void printData(const string& userName, const string& userGender, const int& userAge,
-const double& userHeight, const double& userWeight, const string& exerciseType, const int& exerciseTime)
+               const double& userHeight, const double& userWeight, const string& exerciseType, const int& exerciseTime)
 {
     cout << "\nUser's latest data:\n";
     cout << "Name: " << userName << endl;
