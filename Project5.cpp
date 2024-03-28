@@ -1,13 +1,3 @@
-// Juliana Gomez (s1321300)
-// Tuesday, March 19th, 2024
-// CS 310-01 (Dr. Ling Zheng)
-// Project 5: Personal Fitness Application
-/*
-This program allows users to input their personal fitness data, including weight, exercise type, and exercise time. 
-It stores up to 7 most recent entries and provides options to add data, print the latest data, and print the history of fitness data.
-If users have never selected Option 1 before choosing Option 2, then the program shows a message “There is no fitness data to print.”
-*/
-
 #include <iostream>
 #include <string>
 using namespace std;
@@ -60,7 +50,7 @@ int main()
                 break;
             case 2:
                 if (dataAdded)
-                    printData(userName, userGender, userAge, userHeight, userWeight[count % 7], exerciseTypeArray[count % 7], exerciseTimeArray[count % 7]);
+                    printData(userName, userGender, userAge, userHeight, userWeight[(count - 1) % 7], exerciseTypeArray[(count - 1) % 7], exerciseTimeArray[(count - 1) % 7]);
                 else
                     cout << "There is no fitness data to print.\n";
                 break;
@@ -130,17 +120,13 @@ int selectMenu() {
 void inputData(double userWeight[], string exerciseType[], int exerciseTime[], int& count)
 {
     cout << "\nEnter today's weight (in kilograms): ";
-    cin >> userWeight[count % 7];
-
-    cin.ignore(); // Clear the newline character left in the buffer
+    userWeight[count % 7] = getDoubleInput("");
 
     cout << "Enter the exercise type for today: ";
     getline(cin, exerciseType[count % 7]);
 
     cout << "Enter the exercise time (in minutes): ";
-    cin >> exerciseTime[count % 7];
-
-    cin.ignore(); // Clear the newline character left in the buffer
+    exerciseTime[count % 7] = getIntegerInput("");
 
     // Increment count to keep track of the number of inputs
     count++;
@@ -151,15 +137,12 @@ void printData(const string& userName, const string& userGender, const int& user
                const double& userHeight, const double& userWeight, const string& exerciseType, const int& exerciseTime)
 {
     cout << "\nUser's latest data:\n";
-    cout << "Name: " << userName << endl;
-    cout << "Gender: " << userGender << endl;
-    cout << "Age: " << userAge << endl;
-    cout << "Height: " << userHeight << " m" << endl;
+    cout << userName << endl;
+    cout << userGender << ", " << userAge << ", " << userHeight << " m" << endl;
     cout << "Weight: " << userWeight << " kg" << endl;
     cout << "Exercise: " << exerciseType << " (" << exerciseTime << " mins)" << endl;
 }
 
-// Function to print history of fitness data
 // Function to print history of fitness data
 void printHistoryData(const string& userName, const string& userGender, const int& userAge,
                       const double& userHeight, const double userWeight[], const string exerciseType[], const int exerciseTime[], int count)
@@ -171,14 +154,13 @@ void printHistoryData(const string& userName, const string& userGender, const in
     }
 
     cout << "\nUser's fitness data history:\n";
-    cout << "Name: " << userName << endl;
-    cout << "Gender: " << userGender << endl;
-    cout << "Age: " << userAge << endl;
-    cout << "Height: " << userHeight << " m" << endl;
+    cout << userName << endl;
+    cout << userGender << ", " << userAge << ", " << userHeight << " m" << endl;
 
     cout << "\nRecent 7 entries:\n";
     int start = (count >= 7) ? (count % 7) : 0;
-    for (int i = start; i < count; ++i)
+    int end = (count < 7) ? count : 7;
+    for (int i = start; i < start + end; ++i)
     {
         int index = i % 7;
         cout << "Entry " << i + 1 << ":\n";
